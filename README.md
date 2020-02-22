@@ -1,4 +1,4 @@
-# colt1
+
 Colt's Challenge 1
 
 Submitting the challenge presented at: https://www.youtube.com/watch?v=qGwR_DSSnuQ
