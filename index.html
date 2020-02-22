@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<style type="text/css">
+			body { margin: 10%; font-family: Roboto, sans; font-size: 18px; }
+			.hidden { display: none; }
+			ul { list-style: none }
+			ul li { font-size: 1.5em; font-weight: bold }
+			ul li + div { margin: 0 0 1em 2em; background-color: #f7f7f7; padding: 1em; border-radius: 5px; width: 300px}
+			button { padding: .4em .7em; margin: .5em; border-radius: 3px;border: 1px solid #d14833; font-family: inherit; font-size: 1em;}
+			button.preButton {  background-color: white; color: #d14833 }
+			button.nextButton {  background-color: #d14833; color: white}
+		</style>
+		<title>Colt's Challenge 1</title>
+	</head>
+
+	<body>
+
+		<div id="root"></div>
+
+		<script type="text/javascript">
+			const elements = [
+				{
+					tabTitle: "1 - Form",
+					description: "Please fill out the form",
+					preButton: null,
+					nextButton: "Continue >"
+				},
+				{
+					tabTitle: "2 - Services",
+					description: "Please Choose your desired services",
+					preButton: "< Back",
+					nextButton: "Continue >"
+				},
+				{
+					tabTitle: "3 - Payment",
+					description: "Please make the payment.",
+					preButton: "< Back",
+					nextButton: null
+				}
+			]
+
+			function createSteps(root, elements) {
+				const ul = document.createElement("ul")
+				elements.forEach((item, index) => {
+					const li = document.createElement("li")
+					li.innerHTML = item.tabTitle
+					const div = document.createElement("div")
+					const p = document.createElement("p")
+					const preButton = document.createElement("button")
+					const nextButton = document.createElement("button")
+					p.innerText = item.description
+					preButton.innerText = item.preButton
+					nextButton.innerText = item.nextButton
+
+					div.appendChild(p)
+					if (item.preButton) {
+						preButton.classList.add("preButton")
+						preButton.addEventListener("click", () => {
+							root.querySelector(`div[data-event="${index}"]`).classList.toggle("hidden")
+							root.querySelector(`div[data-event="${index - 1}"]`).classList.toggle("hidden")
+						})
+						div.appendChild(preButton)
+					}
+					if (item.nextButton) {
+						nextButton.classList.add("nextButton")
+						nextButton.addEventListener("click", () => {
+							root.querySelector(`div[data-event="${index}"]`).classList.toggle("hidden")
+							root.querySelector(`div[data-event="${index + 1}"]`).classList.toggle("hidden")
+						})
+						div.appendChild(nextButton)
+					}
+
+					if (index !== 0) div.setAttribute("class", "hidden")
+					div.setAttribute("data-event", index)
+
+					//deploy elements
+					ul.appendChild(li)
+					li.insertAdjacentElement("afterend", div)
+				})
+
+				root.appendChild(ul)
+			}
+
+			// start the process with calling the function
+			// arg1 : the DOM node where to mount
+			// arg2: and array of elements with certain properties
+			createSteps(document.querySelector("#root"), elements)
+		</script>
+	</body>
+</html>
